@@ -1,4 +1,8 @@
 
+using apiAutenticacao.Data;
+using Microsoft.EntityFrameworkCore;
+using Scalar.AspNetCore;
+
 namespace apiAutenticacao
 {
     public class Program
@@ -10,6 +14,10 @@ namespace apiAutenticacao
             // Add services to the container.
 
             builder.Services.AddControllers();
+
+            builder.Services.AddDbContext<AppDbContext>(
+                options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
+                );
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
             builder.Services.AddOpenApi();
 
@@ -19,6 +27,7 @@ namespace apiAutenticacao
             if (app.Environment.IsDevelopment())
             {
                 app.MapOpenApi();
+                app.MapScalarApiReference();
             }
 
             app.UseHttpsRedirection();
