@@ -24,6 +24,7 @@ namespace apiAutenticacao.Controllers
        public async Task<IActionResult> CadastrarUsuarioAsync([FromBody] CadastroUsuarioDTO dadosUsuario) {
 
             if (!ModelState.IsValid) { 
+
                 return BadRequest(ModelState);
             }
 
