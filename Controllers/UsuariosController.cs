@@ -1,6 +1,8 @@
 ﻿using apiAutenticacao.Data;
 using apiAutenticacao.Models;
 using apiAutenticacao.Models.DTO;
+using apiAutenticacao.Models.Responses;
+using apiAutenticacao.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -8,19 +10,19 @@ using static BCrypt.Net.BCrypt;
 
 namespace apiAutenticacao.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/usuarios")]
     [ApiController]
     public class UsuariosController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly IAuthService _authService;
 
-        public UsuariosController(AppDbContext context) { 
-        
-            _context = context;
+        public UsuariosController(IAuthService authService) {
+
+			_authService = authService;
 
         }
 
-        [HttpPost("cadastrar")]
+       [HttpPost("cadastrar")]
        public async Task<IActionResult> CadastrarUsuarioAsync([FromBody] CadastroUsuarioDTO dadosUsuario) {
 
             if (!ModelState.IsValid) { 
@@ -28,47 +30,46 @@ namespace apiAutenticacao.Controllers
                 return BadRequest(ModelState);
             }
 
-            Usuario? usuarioExistente = await _context.Usuarios.
-                FirstOrDefaultAsync(usuario => usuario.Email == dadosUsuario.Email);
-
-            if (usuarioExistente != null) {
-
-                return BadRequest(new { erro = true, mensagem = "Este email já está cadastrado" });
-            
+            ResponseCadastro response = await _authService.CadastrarUsuarioAsync(dadosUsuario);
+            if (response.Erro)
+            {
+                return BadRequest(response);
             }
-
-            Usuario usuario = new Usuario { 
             
-                Nome = dadosUsuario.Nome,
-                Email = dadosUsuario.Email,
-                Senha = HashPassword(dadosUsuario.Senha),
-                ConfirmarSenha = HashPassword(dadosUsuario.ConfirmarSenha)
-                
+                return Ok(response);
 
-            };
+			
 
-            _context.Usuarios.Add(usuario);
-            await _context.SaveChangesAsync();
 
-            return Ok(new { 
-
-                erro = false,
-                mensagem = "Usuário criado com sucesso",
-                usuario = new {
-
-                    id = usuario.Id,
-                    nome = usuario.Nome,
-                    email = usuario.Email
-
-                }
-               
-            
-            });
-
-        
-        
         }
 
+		[HttpPost("login")]
+		public async Task<IActionResult> LoginAsync([FromBody] LoginDTO dadosLogin)
+		{
 
-    }
+			if (!ModelState.IsValid)
+			{
+
+				return BadRequest(ModelState);
+			}
+
+			ResponseCadastro response = await _authService.LoginAsync(dadosLogin);
+			if (response.Erro)
+			{
+				return BadRequest(response);
+			}
+
+			return Ok(response);
+
+
+
+
+		}
+
+
+
+	}
+
+
 }
+

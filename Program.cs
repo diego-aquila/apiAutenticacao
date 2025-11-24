@@ -1,5 +1,6 @@
 
 using apiAutenticacao.Data;
+using apiAutenticacao.Services;
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 
@@ -18,8 +19,11 @@ namespace apiAutenticacao
             builder.Services.AddDbContext<AppDbContext>(
                 options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
                 );
-            // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-            builder.Services.AddOpenApi();
+
+            builder.Services.AddScoped<IAuthService, AuthService>();
+
+			// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
+			builder.Services.AddOpenApi();
 
             var app = builder.Build();
 
