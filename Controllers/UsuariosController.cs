@@ -20,7 +20,7 @@ namespace apiAutenticacao.Controllers
 
         }
 
-        [HttpPost("cadastrar")]
+       [HttpPost("cadastrar")]
        public async Task<IActionResult> CadastrarUsuarioAsync([FromBody] CadastroUsuarioDTO dadosUsuario) {
 
             if (!ModelState.IsValid) { 
@@ -67,6 +67,36 @@ namespace apiAutenticacao.Controllers
 
         
         
+        }
+
+       [HttpPost("login")]
+       public async Task<IActionResult> Login([FromBody] LoginDTO dadosUsuario) {
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            Usuario? usuarioEncontrado = await _context.Usuarios.
+                FirstOrDefaultAsync(usuario => usuario.Email == dadosUsuario.Email);
+
+            if (usuarioEncontrado != null)
+            {
+                bool isValidPassword = Verify(dadosUsuario.Senha, usuarioEncontrado.Senha);
+
+                if (isValidPassword)
+                {
+                    return Ok("Login realizado com sucesso");
+                    
+                }
+
+                return Unauthorized("Login não realizado. Email ou senha incorretos");
+
+            }
+
+            return NotFound("Usuário não encontrado!");
+
+
         }
 
 
