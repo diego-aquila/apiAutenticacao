@@ -12,9 +12,20 @@ namespace apiAutenticacao
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
+            builder.Services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(
+                    policy =>
+                    {
+                        policy.AllowAnyOrigin()
+                              .AllowAnyHeader()
+                              .AllowAnyMethod();
+                    });
+            });
 
-            builder.Services.AddScoped<AuthService>();
+			// Add services to the container.
+
+			builder.Services.AddScoped<AuthService>();
 
             builder.Services.AddControllers();
 
