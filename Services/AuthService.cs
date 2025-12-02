@@ -87,7 +87,7 @@ namespace apiAutenticacao.Services
                 
             }
 
-            Usuario usuario = new Usuario
+            Usuario usuario = new()
             {
 
                 Nome = dadosUsuarioCadastro.Nome,
@@ -98,7 +98,7 @@ namespace apiAutenticacao.Services
 
             };
 
-            _context.Usuarios.Add(usuario);
+            _context.Usuarios.Update(usuario);
             await _context.SaveChangesAsync();
 
             return new ResponseCadastro { 
