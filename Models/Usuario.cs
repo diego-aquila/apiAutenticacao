@@ -26,10 +26,6 @@ namespace apiAutenticacao.Models
         public string Senha { get; set; } = string.Empty;
 
         [JsonIgnore]
-        [Required(ErrorMessage = "A senha é obrigatória")]
-        [Compare("Senha", ErrorMessage = "As senhas não conferem")]
-        public string ConfirmarSenha { get; set; } = string.Empty;
-        [JsonIgnore]
         public DateTime DataCadastro { get; set; }
         [JsonIgnore]
         public bool Ativo { get; set; }

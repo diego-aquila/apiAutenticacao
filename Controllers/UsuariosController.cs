@@ -69,5 +69,30 @@ namespace apiAutenticacao.Controllers
         }
 
 
-    }
+
+     [HttpPut("alterarSenha")]
+		public async Task<IActionResult> AlterarSenha([FromBody] AlterarSenhaDTO dadosUsuario)
+		{
+
+			if (!ModelState.IsValid)
+			{
+				return BadRequest(ModelState);
+			}
+
+			ResponseAlterarSenhaDTO response = await _authService.AlterarSenha(dadosUsuario);
+
+			if (response.Erro)
+			{
+				return BadRequest(response);
+			}
+
+			return Ok(response);
+
+
+
+
+		}
+
+
+	}
 }

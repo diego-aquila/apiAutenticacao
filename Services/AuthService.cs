@@ -2,7 +2,6 @@
 using apiAutenticacao.Models;
 using apiAutenticacao.Models.DTO;
 using apiAutenticacao.Models.Response;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using static BCrypt.Net.BCrypt;
 
@@ -85,15 +84,14 @@ namespace apiAutenticacao.Services
                 };
 
                 
-            }
+            }        
 
-            Usuario usuario = new()
+			Usuario usuario = new()
             {
 
                 Nome = dadosUsuarioCadastro.Nome,
                 Email = dadosUsuarioCadastro.Email,
                 Senha = HashPassword(dadosUsuarioCadastro.Senha),
-                ConfirmarSenha = HashPassword(dadosUsuarioCadastro.ConfirmarSenha)
 
 
             };
@@ -110,9 +108,53 @@ namespace apiAutenticacao.Services
 
             } ;
 
-
-
         }
+
+        public async Task<ResponseAlterarSenhaDTO> AlterarSenha(AlterarSenhaDTO dadosUsuarioAlterar) { 
+
+
+			Usuario? userEncontrado = await _context.Usuarios.FirstOrDefaultAsync(usuario => usuario.Email == dadosUsuarioAlterar.Email);
+
+			
+			if (userEncontrado != null) {
+
+				bool isValidPasswords = Verify(dadosUsuarioAlterar.SenhaAtual, userEncontrado.Senha);
+
+                if (!isValidPasswords)
+                {
+					return new ResponseAlterarSenhaDTO
+					{
+
+						Erro = true,
+						Message = "Senha ou email inválidos."
+
+					};
+				}
+
+                if (dadosUsuarioAlterar.NovaSenha == dadosUsuarioAlterar.ConfirmarNovaSenha)
+                {
+					userEncontrado.Senha = HashPassword(dadosUsuarioAlterar.NovaSenha);
+					_context.Usuarios.Update(userEncontrado);
+					await _context.SaveChangesAsync();
+					return new ResponseAlterarSenhaDTO  { 
+                    
+                        Erro = false,
+                        Message = "Senha alterada com sucesso"
+
+					};
+				}
+            }
+			return new ResponseAlterarSenhaDTO
+			{
+
+				Erro = true,
+				Message = "Senha não pôde ser alterada. Confira seus dados e tente novamente."
+
+			};
+
+
+
+		}
 
 
 
