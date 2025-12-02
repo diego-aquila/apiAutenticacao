@@ -68,6 +68,52 @@ namespace apiAutenticacao.Services
 
         }
 
+        public async Task<ResponseCadastro> CadastrarUsuarioAsync(CadastroUsuarioDTO dadosUsuarioCadastro) {
+
+            Usuario? usuarioExistente = await _context.Usuarios.
+               FirstOrDefaultAsync(usuario => usuario.Email == dadosUsuarioCadastro.Email);
+
+            if (usuarioExistente != null)
+            {
+
+
+                return new ResponseCadastro { 
+                
+                    Erro = true,
+                    Message = "Este email já está cadastrado no sistema"
+                
+                };
+
+                
+            }
+
+            Usuario usuario = new Usuario
+            {
+
+                Nome = dadosUsuarioCadastro.Nome,
+                Email = dadosUsuarioCadastro.Email,
+                Senha = HashPassword(dadosUsuarioCadastro.Senha),
+                ConfirmarSenha = HashPassword(dadosUsuarioCadastro.ConfirmarSenha)
+
+
+            };
+
+            _context.Usuarios.Add(usuario);
+            await _context.SaveChangesAsync();
+
+            return new ResponseCadastro { 
+            
+                Erro = false,
+                Message = "Usuário cadastrado com sucesso",
+                Usuario = usuario
+                
+
+            } ;
+
+
+
+        }
+
 
 
 
