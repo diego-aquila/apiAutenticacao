@@ -25,7 +25,6 @@ namespace apiAutenticacao.Models
         [StringLength(255, ErrorMessage ="A senha deve ter no máximo 255 caracteres")]
         public string Senha { get; set; } = string.Empty;
 
-       
         [JsonIgnore]
         public DateTime DataCadastro { get; set; }
         [JsonIgnore]
