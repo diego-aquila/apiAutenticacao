@@ -93,7 +93,6 @@ namespace apiAutenticacao.Services
                 Nome = dadosUsuarioCadastro.Nome,
                 Email = dadosUsuarioCadastro.Email,
                 Senha = HashPassword(dadosUsuarioCadastro.Senha),
-                ConfirmarSenha = HashPassword(dadosUsuarioCadastro.ConfirmarSenha)
 
 
             };

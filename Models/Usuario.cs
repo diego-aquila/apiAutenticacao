@@ -25,10 +25,7 @@ namespace apiAutenticacao.Models
         [StringLength(255, ErrorMessage ="A senha deve ter no máximo 255 caracteres")]
         public string Senha { get; set; } = string.Empty;
 
-        [JsonIgnore]
-        [Required(ErrorMessage = "A senha é obrigatória")]
-        [Compare("Senha", ErrorMessage = "As senhas não conferem")]
-        public string ConfirmarSenha { get; set; } = string.Empty;
+       
         [JsonIgnore]
         public DateTime DataCadastro { get; set; }
         [JsonIgnore]
