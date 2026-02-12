@@ -14,17 +14,25 @@ namespace apiAutenticacao.Controllers
     [ApiController]
     public class UsuariosController : ControllerBase
     {
-        private readonly AppDbContext _context;
         private readonly AuthService _authService;
+        private readonly UsuarioService _usuarioService;
 
-        public UsuariosController(AppDbContext context, AuthService authService) { 
+        public UsuariosController(AuthService authService, UsuarioService usuarioService) { 
         
             _authService = authService;
-            _context = context;
+			_usuarioService = usuarioService;
 
-        }
 
-       [HttpPost("cadastrar")]
+		}
+
+        [HttpGet("GetUsers")]
+		public async Task<IActionResult> GetAllUsers() {
+            List<Usuario> usuarios = await _usuarioService.GetAllUsers();
+            return Ok(usuarios);
+
+		}
+
+		[HttpPost("cadastrar")]
        public async Task<IActionResult> CadastrarUsuarioAsync([FromBody] CadastroUsuarioDTO dadosUsuario) {
 
             if (!ModelState.IsValid) { 
@@ -58,7 +66,7 @@ namespace apiAutenticacao.Controllers
 
             if (response.Erro)
             {
-                return BadRequest(response.Message);
+                return BadRequest(response);
             }
 
             return Ok(response);

@@ -30,8 +30,9 @@ namespace apiAutenticacao.Models
         [JsonIgnore]
         public bool Ativo { get; set; }
 
+        public List<Endereco>? Enderecos { get; set; }
 
-            public Usuario() {
+		public Usuario() {
 
             DataCadastro = DateTime.Now;
 

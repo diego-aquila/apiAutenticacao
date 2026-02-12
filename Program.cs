@@ -14,6 +14,8 @@ namespace apiAutenticacao
 
 
             builder.Services.AddScoped<AuthService>();
+            builder.Services.AddScoped<UsuarioService>();
+            builder.Services.AddScoped<EnderecoService>();
 
            
             builder.Services.AddControllers();

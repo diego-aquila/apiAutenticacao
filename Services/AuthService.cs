@@ -31,6 +31,8 @@ namespace apiAutenticacao.Services
             {
                 bool isValidPassword = Verify(dadosUsuario.Senha, usuarioEncontrado.Senha);
 
+                
+
                 if (isValidPassword)
                 {
                     return new ResponseLogin { 
@@ -39,7 +41,8 @@ namespace apiAutenticacao.Services
                         Message = "Login Realizado com sucesso",
                         Usuario = new Usuario { 
                         
-                            Nome = usuarioEncontrado.Nome,
+                            Id = usuarioEncontrado.Id,
+							Nome = usuarioEncontrado.Nome,
                             Email = usuarioEncontrado.Email
                         
                         }
@@ -96,7 +99,7 @@ namespace apiAutenticacao.Services
 
             };
 
-            _context.Usuarios.Update(usuario);
+            _context.Usuarios.Add(usuario);
             await _context.SaveChangesAsync();
 
             return new ResponseCadastro { 
