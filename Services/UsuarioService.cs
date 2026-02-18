@@ -18,5 +18,16 @@ namespace apiAutenticacao.Services
 
 		}
 
+		public async Task<Usuario?> GetUserById(int id) {
+
+			Usuario? usuarioEncontrado = 
+				await _context.Usuarios.FirstOrDefaultAsync(usuario => usuario.Id == id);
+
+			return usuarioEncontrado;
+
+		}
+
+
+
 	}
 }

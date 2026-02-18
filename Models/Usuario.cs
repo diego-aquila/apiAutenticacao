@@ -20,7 +20,7 @@ namespace apiAutenticacao.Models
         [StringLength(150, ErrorMessage ="O email deve ter no máximo 150 caracteres")]
         public string Email { get; set; } = string.Empty;
 
-        [JsonIgnore]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         [Required(ErrorMessage ="A senha é obrigatória")]
         [StringLength(255, ErrorMessage ="A senha deve ter no máximo 255 caracteres")]
         public string Senha { get; set; } = string.Empty;
