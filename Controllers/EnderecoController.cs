@@ -1,4 +1,5 @@
 ﻿using apiAutenticacao.Models;
+using apiAutenticacao.Models.DTO;
 using apiAutenticacao.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -29,8 +30,8 @@ namespace apiAutenticacao.Controllers
 
 		}
 
-		[HttpPost("CreateAdress")]
-		public async Task<IActionResult> CreateAdressAsync([FromBody] Endereco endereco) {
+		[HttpPost("CreateAddress")]
+		public async Task<IActionResult> CreateAdressAsync([FromBody] CadastroEnderecoDTO endereco) {
 
 			if (!ModelState.IsValid)
 			{

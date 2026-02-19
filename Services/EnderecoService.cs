@@ -1,5 +1,6 @@
 ﻿using apiAutenticacao.Data;
 using apiAutenticacao.Models;
+using apiAutenticacao.Models.DTO;
 using Microsoft.EntityFrameworkCore;
 
 namespace apiAutenticacao.Services
@@ -21,9 +22,23 @@ namespace apiAutenticacao.Services
 		
 		}
 
-		public async Task<bool> CreateAddressAsync(Endereco endereco) {
+		public async Task<bool> CreateAddressAsync(CadastroEnderecoDTO endereco) {
 
-			_context.Endereco.Add(endereco);
+
+			Endereco enderecoGravar = new Endereco
+			{
+				Logradouro = endereco.Logradouro,
+				Numero = endereco.Numero,
+				Complemento = endereco.Complemento,
+				Bairro = endereco.Bairro,
+				Cidade = endereco.Cidade,
+				Estado = endereco.Estado,
+				Cep = endereco.Cep,
+				UsuarioId = endereco.UsuarioId
+			};
+			
+
+			_context.Endereco.Add(enderecoGravar);
 			int result = await _context.SaveChangesAsync();
 
 			return result > 0;

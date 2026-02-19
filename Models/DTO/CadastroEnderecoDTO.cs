@@ -1,19 +1,16 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text.Json.Serialization;
 
-namespace apiAutenticacao.Models
+namespace apiAutenticacao.Models.DTO
 {
-	public class Endereco
+	public class CadastroEnderecoDTO
 	{
 
-		public int Id { get; set; }
-
-		[Required(ErrorMessage="O campo logradour é obrigatório")]
-		[StringLength(200, ErrorMessage="O campo logradouro deve ter no máximo 200 caracteres")]
+		[Required(ErrorMessage = "O campo logradour é obrigatório")]
+		[StringLength(200, ErrorMessage = "O campo logradouro deve ter no máximo 200 caracteres")]
 		public string Logradouro { get; set; } = string.Empty;
 
-		[Required(ErrorMessage="O campo número é obrigatório")]
+		[Required(ErrorMessage = "O campo número é obrigatório")]
 		public string Numero { get; set; } = string.Empty;
 
 		[StringLength(200, ErrorMessage = "O campo logradouro deve ter no máximo 200 caracteres")]
@@ -24,7 +21,7 @@ namespace apiAutenticacao.Models
 		public string Bairro { get; set; } = string.Empty;
 
 		[Required(ErrorMessage = "O campo cidade é obrigatório")]
-		[StringLength(100, ErrorMessage = "O campo cidade deve ter no máximo 100 caracteres")] 
+		[StringLength(100, ErrorMessage = "O campo cidade deve ter no máximo 100 caracteres")]
 		public string Cidade { get; set; } = string.Empty;
 
 
@@ -38,9 +35,6 @@ namespace apiAutenticacao.Models
 
 		[ForeignKey(nameof(Usuario))]
 		public int UsuarioId { get; set; }
-
-		[JsonIgnore]
-		public Usuario? Usuario { get; set; }
 
 	}
 }
