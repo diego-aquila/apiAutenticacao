@@ -7,5 +7,7 @@ namespace apiAutenticacao.Services.Interfaces
 	{
 		Task<List<Usuario>> GetAllUsers();
 		Task<Usuario?> GetUserById(int id);
+
+
 	}
 }
